@@ -19,11 +19,9 @@ def get_facets(SearchWord):
 def get_number_of_team_games(Season,Team):
 	client = MongoClient('mongodb://localhost:27017/')
 	db = client['basketstats']
-	SearchWord='Pan'
-	rexpr='(?i).*{SW}.*'.replace('{SW}',SearchWord)
 	results=db['players'].aggregate([
 		{'$unwind':'$Stats.'+Season+'.fullStats'},
-		{'$match':{'Stats.'+Season+'.fullStats.homeTeam':Team}},
+		{'$match':{'Stats.'+Season+'.fullStats.playerTeam':Team}},
 		{'$group':{'_id':'$Stats.'+Season+'.fullStats.GameId'}},
 		{'$count':'games'}
 		])
